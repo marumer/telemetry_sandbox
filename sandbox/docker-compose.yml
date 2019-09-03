@@ -38,6 +38,9 @@ services:
       - ./telegraf/:/etc/telegraf/
       # Mount for Docker API access
       - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      # The API for InfluxDB is served on port 8086
+      - "57000:57000"
     depends_on:
       - influxdb
 
