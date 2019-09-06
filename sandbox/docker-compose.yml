@@ -89,6 +89,20 @@ services:
       - influxdb
       - telegraf
 
+  grafana:
+    #restart: always
+    image: grafana/grafana
+    environment:
+     #- "GF_INSTALL_PLUGINS=jdbranham-diagram-panel"
+     - "GF_SECURITY_ADMIN_PASSWORD=admin"
+     - "http_proxy=${http_proxy}"
+     - "https_proxy=${https_proxy}"
+     - "no_proxy=environment_influxdb_1,${no_proxy}"
+    ports:
+    - "3000:3000"
+    links:
+      - influxdb
+
   documentation:
     build:
       context: ./documentation

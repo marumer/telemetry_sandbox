@@ -46,8 +46,12 @@ sandbox () {
         echo "Entering /bin/bash session in the telegraf container..."
         docker-compose exec telegraf /bin/bash
         ;;
+      grafana)
+        echo "Entering /bin/bash session in the grafana container..."
+        docker-compose exec grafana /bin/bash
+        ;;
       *)
-        echo "sandbox enter (influxdb||chronograf||kapacitor||telegraf)"
+        echo "sandbox enter (influxdb||chronograf||kapacitor||telegraf||grafana)"
         ;;
     esac
   }
@@ -71,6 +75,11 @@ sandbox () {
         echo "Following the logs from the telegraf container..."
         docker-compose logs -f telegraf
         ;;
+      grafana)
+        echo "Following the logs from the grafana container..."
+        docker-compose logs -f grafana
+        ;;
+
       *)
         echo "sandbox logs (influxdb||chronograf||kapacitor||telegraf)"
         ;;
@@ -113,7 +122,7 @@ sandbox () {
       echo "Stopping and removing running sandbox containers..."
       docker-compose down
       echo "Removing TICK images..."
-      docker rmi sandbox_documentation influxdb:latest telegraf:latest kapacitor:latest chronograf:latest chrono_config:latest quay.io/influxdb/influxdb:nightly quay.io/influxdb/chronograf:nightly> /dev/null 2>&1
+      docker rmi sandbox_documentation grafana/grafana:latest influxdb:latest telegraf:latest kapacitor:latest chronograf:latest chrono_config:latest quay.io/influxdb/influxdb:nightly quay.io/influxdb/chronograf:nightly> /dev/null 2>&1
       docker rmi $(docker images -f "dangling=true" -q)
       ;;
     influxdb)
@@ -146,8 +155,8 @@ sandbox commands:
   influxdb           -> attach to the influx cli
   flux               -> attach to the flux REPL
 
-  enter (influxdb||kapacitor||chronograf||telegraf) -> enter the specified container
-  logs  (influxdb||kapacitor||chronograf||telegraf) -> stream logs for the specified container
+  enter (influxdb||kapacitor||chronograf||telegraf||grafana) -> enter the specified container
+  logs  (influxdb||kapacitor||chronograf||telegraf||grafana) -> stream logs for the specified container
 
   delete-data  -> delete all data created by the TICK Stack
   docker-clean -> stop and remove all running docker containers and images
